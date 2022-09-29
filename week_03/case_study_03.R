@@ -38,11 +38,14 @@ gapminder_continent <-
   summarise(ConYearGroup, gdpPercapweighted = weighted.mean(x = gdpPercap, w = pop),
             pop = sum(as.numeric(pop)))
 #create the second row of plots
-plot_2 <- ggplot(noKuwait, mapping=aes(x = year, y = gdpPercap, color = continent, size = pop/100000))+
+plot_2 <- ggplot(noKuwait, mapping=aes(x = year, y = gdpPercap, color = continent,
+                                       size = pop/100000))+
   geom_line(mapping=aes(group=country, size = 0.3))+
   geom_point(aes(size = pop/100000))+
-  geom_line(gapminder_continent, mapping=aes(x = year, y = gdpPercapweighted), color = "black", size = 0.5)+
-  geom_point(data = gapminder_continent, mapping=aes(x = year, y = gdpPercapweighted, size = pop/100000), color = "black") +
+  geom_line(gapminder_continent, mapping=aes(x = year, y = gdpPercapweighted), 
+            color = "black", size = 0.5)+
+  geom_point(data = gapminder_continent, mapping=aes(x = year, y = gdpPercapweighted,
+                                  size = pop/100000), color = "black") +
   scale_size_continuous(trans = "sqrt")+
   facet_wrap(~continent, nrow = 1)+
   theme_bw()+
