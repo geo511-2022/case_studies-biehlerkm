@@ -25,15 +25,14 @@ ggplot(tmax_country, aes(fill=tmean)) +
   scale_fill_viridis_c(name="Annual\nMaximum\nTemperature (C)") +
   theme(legend.position = 'bottom')
 
-hottest_countries <- tmax_country %>%
+hottest_continents <- tmax_country %>%
   group_by(continent) %>%
   arrange(.by_group = TRUE) %>%
   select(name_long, continent, tmean) %>%
   st_set_geometry(NULL) %>%
   arrange(desc(tmean))
 
-hottest_countries
-
+hottest_continents
 
 
 
