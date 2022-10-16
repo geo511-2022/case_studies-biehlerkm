@@ -20,10 +20,12 @@ names(tmean)<- "tmean" #update the data layer to ‘tmean’
 maxtemp <-raster::extract(tmean, new_world, fun=max, na.rm=T, small=T, sp=T) #Extract values from a Raster object at the locations of spatial vector data 
 tmax_country<-st_as_sf(maxtemp) #convert back to sf
 
-ggplot(tmax_country, aes(fill=tmean)) + 
+cs6_plot <- ggplot(tmax_country, aes(fill=tmean)) + 
   geom_sf() +
   scale_fill_viridis_c(name="Annual\nMaximum\nTemperature (C)") +
   theme(legend.position = 'bottom')
+
+#cs6_plot
 
 hottest_continents <- tmax_country %>%
   group_by(continent) %>%
@@ -34,24 +36,5 @@ hottest_continents <- tmax_country %>%
 
 hottest_continents
 
-
-
-maxtemp <- raster::extract(tmean, new_world, fun = max, na.rm=T, small=T, sp=T)
-
-#convert to sf
-tmax_country <- st_as_sf(maxtemp)
-
-#plot results
-ggplot(tmax_country, aes(fill= "tmax")) + 
-  geom_sf() +
-  scale_fill_viridis_c(name="Annual\nMaximum\nTemperature (C)") +
-  theme(legend.position = 'bottom')
-
-hottest_continents <- tmax_country %>%
-  group_by(continent) %>%
-  top_n(1, tmax) %>%
-  select(name_long, continent, tmax) %>%
-  st_set_geometry(NULL) %>%
-  arrange(desc(tmax))
-
-hottest_continents
+#hottest_continents[1:10,]
+#top 10
