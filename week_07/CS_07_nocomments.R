@@ -5,6 +5,7 @@
 library(tidyverse)
 library(sf)
 library(spData)
+library(ggplot2)
 
 #use data from sp world
 data(world)
@@ -23,6 +24,7 @@ ggplot(world,aes(x=gdpPercap, y=continent, color=continent))+
 # library(sf)
 # #> Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE
 # library(spData)
+# library(ggplot2)
 # 
 # #use data from sp world
 # data(world)
