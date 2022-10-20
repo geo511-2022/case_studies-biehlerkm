@@ -2,11 +2,10 @@
 #load libraries
 library(sp)
 library(tidyverse)
+library(leaflet)
 
 #load map
-#need NY state map
-#or county?
-#from sp?
+#leaflet
 
 #download file from online source
 download.file()
@@ -14,6 +13,6 @@ download.file()
 #it should save in your working directory
 
 #read file in and call it "alc_outlet_all"
-#missing is blank, not sure what to do about htat
+#missing is blank, not sure what to do about that
 alc_outlet_all <- read_csv()
 

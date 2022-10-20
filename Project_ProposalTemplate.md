@@ -59,16 +59,22 @@ One source of data will be the alcohol outlet location information
 updated daily by the State Liquor Authority at this webpage:
 [](https://data.ny.gov/Economic-Development/Liquor-Authority-Daily-List-of-Active-Licenses-API/wg8y-fzsj/data)
 
+You can see a map of these locations online. I’ll essentially recreate
+the map in R.
+
 The other source will be data collected from participants in a study.
 This data may be in part generated to maintain confidentiality. Because
-the data contain’s individual location information it will not be made
+the data contains individual location information it will not be made
 publicly available.
 
 # Proposed methods
 
 I will need to use packages to download the publicly available data and
 manipulate it so that is is a spatial data object. I will need to join
-that dataset with the study data and map them both together.
+that dataset with the study data and map them both together. I plan to
+use leaflet maps from the leaflet package for the background map. In
+order to take the address location available for the alcohol outlets, I
+plan to use the geocode package.
 
 # Expected results
 
