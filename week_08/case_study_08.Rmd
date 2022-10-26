@@ -1,9 +1,9 @@
 ---
-title: "GEO511_case_study_8"
+title: "GEO511 case study 8"
 output:
-  word_document: default
-  github_document: default
   html_document: default
+  github_document: default
+  word_document: default
   slidy_presentation: default
   pdf_document: default
   powerpoint_presentation: default
@@ -36,6 +36,7 @@ recent_year <- mean_annual %>%
   select(year, mean) %>%
   arrange(desc(mean)) %>%
  slice_head(n = 10)
+print(recent_year)
 
 recent_year %>%
   kbl(caption = "The Last 10 Years of Mean Annual Data") %>% 
