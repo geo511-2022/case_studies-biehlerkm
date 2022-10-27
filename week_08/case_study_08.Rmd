@@ -1,11 +1,11 @@
 ---
 title: "GEO511 case study 8"
 output:
-  html_document: default
+  pdf_document: default
   github_document: default
   word_document: default
   slidy_presentation: default
-  pdf_document: default
+  html_document: default
   powerpoint_presentation: default
   ioslides_presentation: default
 date: "2022-10-25"
