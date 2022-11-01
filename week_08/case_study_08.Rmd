@@ -1,7 +1,46 @@
 ---
-title: "Case Study 08"
-author: Your Name
-date: August 1, 2020
-output: github_document
+title: "GEO511 case study 8"
+output:
+  pdf_document: default
+  github_document: default
+  word_document: default
+  slidy_presentation: default
+  html_document: default
+  powerpoint_presentation: default
+  ioslides_presentation: default
+date: "2022-10-25"
 ---
- 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+library(ggplot2)
+library(kableExtra)
+library(magick)
+library(tidyverse)
+mean_annual <- read_table("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_annmean_mlo.txt", skip = 57, col_names = c("year", "mean", "unc"))
+
+```
+
+## Manua Loa Trends in Atmospheric Carbon Dioxide
+
+This is updated data from the Global Monitoring Laboratory (Earth System Research Laboratories) on trends in atmospheric carbon dioxide from Manua Loa, Hawaii.
+Reference:
+[Dr. Pieter Tans, NOAA/GML](gml.noaa.gov/ccgg/trends/) [Dr. Ralph Keeling, Scripps Institution of Oceanography](scrippsco2.ucsd.edu/).
+
+```{r plot and table, echo=F}
+plot_mean_annual <- ggplot(mean_annual, aes(x = year, y = mean))+
+  geom_line()
+plot_mean_annual
+
+recent_year <- mean_annual %>%
+  select(year, mean) %>%
+  arrange(desc(mean)) %>%
+ slice_head(n = 10)
+print(recent_year)
+
+recent_year %>%
+  kbl(caption = "The Last 10 Years of Mean Annual Data") %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = T, position = "left") %>%
+  as_image(width = 10,file = "table.png")
+```
+

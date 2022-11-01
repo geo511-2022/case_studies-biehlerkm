@@ -1,7 +1,77 @@
 ---
 title: "Case Study 09"
-author: Your Name
-date: August 1, 2020
+author: Kaitlyn Biehler
+date: November 1, 2022
 output: github_document
 ---
  
+# Install libraries and dependencies
+```{r}
+library(sf)
+library(tidyverse)
+library(ggmap)
+library(rnoaa)
+library(spData)
+library(kableExtra)
+library(magick)
+library(dplyr)
+data(world)
+data(us_states)
+
+# Download zipped data from noaa with storm track information
+dataurl="https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r00/access/shapefile/IBTrACS.NA.list.v04r00.points.zip"
+
+tdir=tempdir()
+download.file(dataurl,destfile=file.path(tdir,"temp.zip"))
+unzip(file.path(tdir,"temp.zip"),exdir = tdir) #unzip the compressed folder
+storm_data <- read_sf(list.files(tdir,pattern=".shp",full.names = T))
+```
+
+#Wrangle the data
+```{r}
+storms <- storm_data %>%
+  dplyr::filter(year >= 1950) %>%
+  mutate_if(is.numeric, function(x) ifelse(x==-999.0,NA,x)) %>%
+  mutate(decade=(floor(year/10)*10))
+```
+
+#Identify the bounding box
+```{r}
+region <- st_bbox(storms)
+```
+#Make the first plot
+```{r}
+ggplot(world)+
+  geom_sf()+
+  facet_wrap(~decade) +
+  stat_bin2d(data=storms, 
+             aes(y=st_coordinates(storms)[,2],
+                 x=st_coordinates(storms)[,1]),bins=100) +
+  scale_fill_distiller(palette="YlOrRd", 
+                       trans="log", direction=-1, 
+                       breaks = c(1,10,100,1000)) +
+  coord_sf(ylim=region[c(2,4)], xlim=region[c(1,3)])
+  
+```
+#Calculate a table with the five states that have the most storms
+```{r}
+#Reproject the crs of us_states
+states <- st_transform(us_states, crs = st_crs(storms)) %>%
+  select(state = NAME) #rename NAME to state
+#join the datasets
+  storm_states <- st_join(storms, states, join = st_intersects,left = F)
+#group and rearrange
+  top5 <- storm_states %>%
+    group_by(state) %>%
+    summarize(storms=length(unique(NAME))) %>%
+    arrange(desc(storms)) %>%
+    slice(1:5)
+  top5
+```
+# Create a nicer table
+```{r}
+top5 %>%
+  kbl(caption = "The States with the Most Number of Storms") %>% 
+    kable_styling(bootstrap_options = c("striped", "hover"), full_width = T, position = "left") %>%
+    as_image(width = 10,file = "stormstable.png")
+```
